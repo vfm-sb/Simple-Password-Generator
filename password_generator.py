@@ -6,7 +6,7 @@ __author__ = "VFM | SB"
 __email__ = "vfm_sb@proton.me"
 __copyright__ = "Copyleft 2022"
 __license__ = "GNU GPLv3"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __maintainer__ = "VFM | SB"
 __status__ = "Development"
 
@@ -49,7 +49,7 @@ def shuffle_password(password: str) -> str:
 
 def remove_excess_chars(password: str, n: int) -> str:
     for i in range(n):
-        password.replace(choice(password), "")
+        password = password.replace(choice(password), "")
     return password
 
 # Main Function
