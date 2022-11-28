@@ -6,7 +6,7 @@ __author__ = "VFM | SB"
 __email__ = "vfm_sb@proton.me"
 __copyright__ = "Copyleft 2022"
 __license__ = "MIT"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __maintainer__ = "VFM | SB"
 __status__ = "Development"
 
@@ -38,8 +38,10 @@ def generate_password(char_set: str, n: int = 1) -> str:
             password: str (n number of chars from char_set)
     """
     password = ""
-    for i in range(n):
+    i = 0
+    while i < n:
         password += choice(char_set)
+        i += 1
     return password
 
 def shuffle_password(password: str) -> str:
@@ -48,8 +50,10 @@ def shuffle_password(password: str) -> str:
     return "".join(password)
 
 def remove_excess_chars(password: str, n: int) -> str:
-    for i in range(n):
+    i = 0
+    while i < n:
         password = password.replace(choice(password), "")
+        i += 1
     return password
 
 # Main Function
@@ -72,10 +76,12 @@ def main():
         password += generate_password(digits, least_digits)
         # calculate total of minimum character sets
         total_chars = least_upper + least_upper + least_symbols + least_digits
-        # add remaining to password
+        # if given password_length is greater than total_chars,
+        # add remaining number of characters to password
         if password_length > total_chars:
             password += generate_password(ALL_CHARS, password_length - total_chars)
-        # remove excess from password
+        # else if total_chars is greater than password length
+        # remove excess characters from password
         elif total_chars > password_length:
             password = remove_excess_chars(password, total_chars - password_length)
     else:
@@ -86,7 +92,7 @@ def main():
             main()
         else:
             return
-    print(shuffle_password(password))
+    print("\nGenerated Password:\n", shuffle_password(password), sep="")
 
 
 # Execution
