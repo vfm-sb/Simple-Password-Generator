@@ -6,7 +6,7 @@ __author__ = "VFM | SB"
 __email__ = "vfm_sb@proton.me"
 __copyright__ = "Copyleft 2022"
 __license__ = "MIT"
-__version__ = "0.1.2"
+__version__ = "0.2.1"
 __maintainer__ = "VFM | SB"
 __status__ = "Development"
 
@@ -16,7 +16,7 @@ from string import ascii_letters, ascii_uppercase, ascii_lowercase, digits
 
 
 # GLOBAL Variables
-SPECIAL_CHARS = "!@#$%^&*()-_+=[]{};:|,.?~"
+SPECIAL_CHARS = "!@#$%^&*()_+=[]{};:|,.?~"
 ALL_CHARS = ascii_letters + SPECIAL_CHARS + digits
 RECOMMENDED = {
     ALL_CHARS: 8,
@@ -38,10 +38,8 @@ def generate_password(char_set: str, n: int = 1) -> str:
             password: str (n number of chars from char_set)
     """
     password = ""
-    i = 0
-    while i < n:
+    for i in range(n):
         password += choice(char_set)
-        i += 1
     return password
 
 def shuffle_password(password: str) -> str:
@@ -50,21 +48,28 @@ def shuffle_password(password: str) -> str:
     return "".join(password)
 
 def remove_excess_chars(password: str, n: int) -> str:
-    i = 0
-    while i < n:
+    for i in range(n):
         password = password.replace(choice(password), "")
-        i += 1
+    return password
+
+def insert_dash(password: str, gap: int) -> str:
+    pw_len = len(password)
+    for i in range(gap, pw_len, gap + 1):
+        password = password[:i] + "-" + password[i:]
     return password
 
 # Main Function
 def main():
     print(f"Simple Password Generator -- Version {__version__}")
-    operation_command = input("Choose an Operation (suggest | manual)\n").lower()
+    operation_commands = input(
+        "Choose an Operation (random | manual) & (default | readable)\n"
+    ).lower()
+    operation_commands = operation_commands.split(" ")
     password = ""
-    if operation_command == "suggest":
+    if "random" in operation_commands:
         for char_set, n in RECOMMENDED.items():
             password += generate_password(char_set, n)
-    elif operation_command == "manual":
+    elif "manual" in operation_commands:
         password_length = int(input("Password Length:\n"))
         least_upper = int(input("Minumum Uppercase Letters?\n"))
         password += generate_password(ascii_uppercase, least_upper)
@@ -92,7 +97,28 @@ def main():
             main()
         else:
             return
-    print("\nGenerated Password:\n", shuffle_password(password), sep="")
+    print(password, len(password))
+    password = shuffle_password(password)
+    print(password, len(password))
+    if "readable" in operation_commands:
+        available_breakpoints = []
+        for i in range(1, len(password) + 1):
+            if i == 1 or i == len(password):
+                continue
+            if len(password) % i == 0:
+                available_breakpoints.append(i)
+        # user can only choose one of the available breakpoints
+        section_length = int(
+            input(
+                'Prefered Section Lenght? '
+                f'({", ".join(map(str, available_breakpoints))})\n'
+            )
+        )
+        if section_length in available_breakpoints:
+            password = insert_dash(password, section_length)
+        else:
+            print("Invalid Breakpoint Value")
+    print("\nGenerated Password:\n", password, len(password), sep=" ")
 
 
 # Execution
