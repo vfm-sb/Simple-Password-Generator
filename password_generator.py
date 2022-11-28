@@ -38,10 +38,8 @@ def generate_password(char_set: str, n: int = 1) -> str:
             password: str (n number of chars from char_set)
     """
     password = ""
-    i = 0
-    while i < n:
+    for i in range(n):
         password += choice(char_set)
-        i += 1
     return password
 
 def shuffle_password(password: str) -> str:
@@ -50,10 +48,8 @@ def shuffle_password(password: str) -> str:
     return "".join(password)
 
 def remove_excess_chars(password: str, n: int) -> str:
-    i = 0
-    while i < n:
+    for i in range(n):
         password = password.replace(choice(password), "")
-        i += 1
     return password
 
 # Main Function
