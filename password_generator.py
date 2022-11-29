@@ -6,7 +6,7 @@ __author__ = "VFM | SB"
 __email__ = "vfm_sb@proton.me"
 __copyright__ = "Copyleft 2022"
 __license__ = "MIT"
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 __maintainer__ = "VFM | SB"
 __status__ = "Development"
 
@@ -49,14 +49,16 @@ def shuffle_password(password: str) -> str:
 
 def remove_excess_chars(password: str, n: int) -> str:
     for i in range(n):
-        password = password.replace(choice(password), "")
+        password = password.replace(choice(password), "", 1)
     return password
 
 def insert_dash(password: str, gap: int) -> str:
-    pw_len = len(password)
-    for i in range(gap, pw_len, gap + 1):
-        password = password[:i] + "-" + password[i:]
-    return password
+    pw_list = list(password)
+    i = gap
+    while i < len(pw_list):
+        pw_list.insert(i, "-")
+        i += gap + 1
+    return "".join(pw_list)
 
 # Main Function
 def main():
@@ -118,7 +120,7 @@ def main():
             password = insert_dash(password, section_length)
         else:
             print("Invalid Breakpoint Value")
-    print("\nGenerated Password:\n", password, len(password), sep=" ")
+    print("\nGenerated Password:\n", password, sep="")
 
 
 # Execution
