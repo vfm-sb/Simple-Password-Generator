@@ -60,6 +60,9 @@ def insert_dash(password: str, section_length: int) -> str:
         i += section_length + 1
     return "".join(pw_list)
 
+def primes(password_length: int) -> list:
+    """Returns Primes of password_length (excluding 1 and number's itself)"""
+    return [n for n in range(2, password_length) if password_length % n == 0]
 
 # Main Function
 def main():
@@ -100,20 +103,12 @@ def main():
             main()
         else:
             return
-    # shuffle password for total randomness
+    # shuffle password for better randomness
     password = shuffle_password(password)
     # if "readable" keyword is given,
-    # determine primes of desired password length,
-    # then present them to user as options
+    # present primes of password length as breaking point options
     if "readable" in operation_commands:
-        available_breakpoints = []
-        for i in range(1, len(password) + 1):
-            # exclude 1 and length value
-            if i == 1 or i == len(password):
-                continue
-            # if number is prime of length, add it to collection
-            if len(password) % i == 0:
-                available_breakpoints.append(i)
+        available_breakpoints = primes(len(password))
         # user can only choose one of the available breakpoints
         section_length = int(
             input(
