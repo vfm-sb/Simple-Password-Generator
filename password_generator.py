@@ -68,7 +68,7 @@ def insert_dash(password: str, section_length: int) -> str:
 def main():
     print(f"Simple Password Generator -- Version {__version__}")
     operation_commands = input(
-        "Choose an Operation (random | manual) & (default | readable)\n"
+        "Choose an Operation (random | manual) & (readable)\n"
     ).lower()
     operation_commands = operation_commands.split(" ")
     password = ""
@@ -107,7 +107,7 @@ def main():
     password = shuffle_password(password)
     # if "readable" keyword is given,
     # determine primes of desired password length,
-    # then present them to user as section_length options
+    # then present them to user as options
     if "readable" in operation_commands:
         available_breakpoints = []
         for i in range(1, len(password) + 1):
