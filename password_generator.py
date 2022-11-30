@@ -29,14 +29,7 @@ RECOMMENDED = {
 
 # Functions
 def generate_password(char_set: str, char_count: int = 1) -> str:
-    """
-    Generates a Password in Desired Length\n
-        Parameters:\n
-            char_set\n
-            n (Number of Characters)\n
-        Returns:\n
-            password: str (n number of chars from char_set)
-    """
+    """Generates a Password in Desired Length"""
     password = ""
     i = 0
     while i < char_count:
@@ -45,11 +38,13 @@ def generate_password(char_set: str, char_count: int = 1) -> str:
     return password
 
 def shuffle_password(password: str) -> str:
+    """Shuffles Password String"""
     password = list(password)
     shuffle(password)
     return "".join(password)
 
 def remove_excess_chars(password: str, excess_count: int) -> str:
+    """Removes Excess Characters From Password"""
     i = 0
     while i < excess_count:
         password = password.replace(choice(password), "", 1)
@@ -57,12 +52,14 @@ def remove_excess_chars(password: str, excess_count: int) -> str:
     return password
 
 def insert_dash(password: str, section_length: int) -> str:
+    """Inserts Dash (-) Characters at Desired Spaces"""
     pw_list = list(password)
     i = section_length
     while i < len(pw_list):
         pw_list.insert(i, "-")
         i += section_length + 1
     return "".join(pw_list)
+
 
 # Main Function
 def main():
