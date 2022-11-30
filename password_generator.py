@@ -28,7 +28,7 @@ RECOMMENDED = {
 
 
 # Functions
-def generate_password(char_set: str, n: int = 1) -> str:
+def generate_password(char_set: str, char_count: int = 1) -> str:
     """
     Generates a Password in Desired Length\n
         Parameters:\n
@@ -38,8 +38,10 @@ def generate_password(char_set: str, n: int = 1) -> str:
             password: str (n number of chars from char_set)
     """
     password = ""
-    for i in range(n):
+    i = 0
+    while i < char_count:
         password += choice(char_set)
+        i += 1
     return password
 
 def shuffle_password(password: str) -> str:
@@ -47,17 +49,19 @@ def shuffle_password(password: str) -> str:
     shuffle(password)
     return "".join(password)
 
-def remove_excess_chars(password: str, n: int) -> str:
-    for i in range(n):
+def remove_excess_chars(password: str, excess_count: int) -> str:
+    i = 0
+    while i < excess_count:
         password = password.replace(choice(password), "", 1)
+        i += 1
     return password
 
-def insert_dash(password: str, gap: int) -> str:
+def insert_dash(password: str, section_length: int) -> str:
     pw_list = list(password)
-    i = gap
+    i = section_length
     while i < len(pw_list):
         pw_list.insert(i, "-")
-        i += gap + 1
+        i += section_length + 1
     return "".join(pw_list)
 
 # Main Function
@@ -69,8 +73,8 @@ def main():
     operation_commands = operation_commands.split(" ")
     password = ""
     if "random" in operation_commands:
-        for char_set, n in RECOMMENDED.items():
-            password += generate_password(char_set, n)
+        for char_set, char_count in RECOMMENDED.items():
+            password += generate_password(char_set, char_count)
     elif "manual" in operation_commands:
         password_length = int(input("Password Length:\n"))
         least_upper = int(input("Minumum Uppercase Letters?\n"))
@@ -99,14 +103,18 @@ def main():
             main()
         else:
             return
-    print(password, len(password))
+    # shuffle password for total randomness
     password = shuffle_password(password)
-    print(password, len(password))
+    # if "readable" keyword is given,
+    # determine primes of desired password length,
+    # then present them to user as section_length options
     if "readable" in operation_commands:
         available_breakpoints = []
         for i in range(1, len(password) + 1):
+            # exclude 1 and length value
             if i == 1 or i == len(password):
                 continue
+            # if number is prime of length, add it to collection
             if len(password) % i == 0:
                 available_breakpoints.append(i)
         # user can only choose one of the available breakpoints
